@@ -1,0 +1,33 @@
+/* =========================
+   DARK MODE (DEFAULT)
+========================= */
+:root {
+  --bg-main: linear-gradient(180deg, #020617, #020617);
+  --text-main: #ffffff;
+
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.12);
+
+  --title-text: #ffffff;
+  --muted-text: #cbd5f5;
+
+  --chart-bg: #ffffff;
+  --chart-text: #020617;
+}
+
+/* =========================
+   LIGHT MODE
+========================= */
+[data-theme="light"] {
+  --bg-main: linear-gradient(180deg, #f8fafc, #e5e7eb);
+  --text-main: #020617;
+
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+
+  --title-text: #020617;
+  --muted-text: #475569;
+
+  --chart-bg: #ffffff;
+  --chart-text: #020617;
+}

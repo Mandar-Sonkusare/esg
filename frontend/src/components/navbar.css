@@ -1,0 +1,62 @@
+/* 🔧 Prevent horizontal scrolling */
+* {
+  box-sizing: border-box;
+}
+
+/* 🔹 Full-width navbar */
+.navbar {
+  width: 100vw;
+  background: linear-gradient(135deg, #020617, #020617);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* 🔹 Center content without overflow */
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 🔹 Title */
+.navbar-title {
+  color: white;
+  margin: 0;
+}
+
+/* 🔹 Theme toggle button */
+.theme-toggle {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* 🔹 Mobile safety */
+@media (max-width: 480px) {
+  .navbar-inner {
+    padding: 14px 16px;
+  }
+}
+<button
+  onClick={() =>
+    setTheme(theme === "dark" ? "light" : "dark")
+  }
+  style={{
+    padding: "8px 14px",
+    borderRadius: "8px",
+    border: "1px solid rgba(255,255,255,0.2)",
+    cursor: "pointer",
+    background: "transparent",
+    color: "white",
+    fontSize: "14px",
+  }}
+>
+  {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+</button>
