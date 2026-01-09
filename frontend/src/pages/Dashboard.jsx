@@ -105,7 +105,7 @@ function Dashboard() {
         max: 100,
         ticks: { display: false },
         pointLabels: {
-          color: '#374151', // Always dark gray for visibility
+          color: '#374151',
           font: { size: 12, weight: '500' }
         }
       }

@@ -168,7 +168,7 @@ body {
 .overall-content h3 {
   margin: 0 0 20px;
   font-size: 20px;
-  color: var(--muted-text);
+  color: var(--card-text);
   font-weight: 500;
 }
 
@@ -183,7 +183,7 @@ body {
   margin: 0;
   font-size: 80px;
   font-weight: 800;
-  color: var(--title-text);
+  color: var(--card-text);
   line-height: 1;
 }
 
@@ -267,14 +267,14 @@ body {
 .card-content h4 {
   margin: 0;
   font-size: 16px;
-  color: var(--muted-text);
+  color: var(--card-text);
   font-weight: 500;
 }
 
 .card-content .score {
   font-size: 28px;
   font-weight: 700;
-  color: var(--title-text);
+  color: var(--card-text);
 }
 
 .score-bar {
@@ -340,8 +340,8 @@ body {
 }
 
 .radar-container {
-  height: 300px;
-  padding: 40px;
+  height: 400px;
+  padding: 10px;
 }
 
 /* =========================
