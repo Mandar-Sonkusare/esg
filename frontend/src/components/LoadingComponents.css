@@ -1,0 +1,442 @@
+/* Import theme variables */
+@import '../styles/theme.css';
+
+/* =========================
+   SKELETON COMPONENTS
+========================= */
+
+/* Base skeleton animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.skeleton-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.skeleton-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-line-title {
+  width: 70%;
+  height: 16px;
+}
+
+.skeleton-line-subtitle {
+  width: 50%;
+  height: 12px;
+}
+
+.skeleton-line-full {
+  width: 100%;
+}
+
+.skeleton-line-medium {
+  width: 75%;
+}
+
+.skeleton-line-small {
+  width: 45%;
+}
+
+.skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Skeleton Score Card */
+.skeleton-score-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.skeleton-score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.skeleton-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-trend {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-score-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-score-number {
+  width: 60px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--card-border);
+  overflow: hidden;
+}
+
+.skeleton-progress-fill {
+  width: 65%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+/* Skeleton Chart */
+.skeleton-chart {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.skeleton-chart-title {
+  width: 150px;
+  height: 20px;
+  border-radius: 10px;
+  margin: 0 auto 24px;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+.skeleton-chart-content {
+  height: calc(100% - 44px);
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+
+.skeleton-chart-bars {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  height: 80%;
+  width: 60%;
+}
+
+.skeleton-bar {
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(90deg, var(--card-border) 25%, rgba(255,255,255,0.1) 50%, var(--card-border) 75%);
+  background-size: 200px 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+/* =========================
+   LOADING SPINNERS
+========================= */
+
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 40px;
+}
+
+.loading-spinner-modern {
+  position: relative;
+  display: inline-block;
+}
+
+.spinner-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-radius: 50%;
+  animation: spin-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.spinner-ring:nth-child(1) {
+  border-top-color: #3b82f6;
+  animation-delay: -0.45s;
+}
+
+.spinner-ring:nth-child(2) {
+  border-top-color: #10b981;
+  animation-delay: -0.3s;
+}
+
+.spinner-ring:nth-child(3) {
+  border-top-color: #f59e0b;
+  animation-delay: -0.15s;
+}
+
+.spinner-ring:nth-child(4) {
+  border-top-color: #ef4444;
+}
+
+@keyframes spin-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-message {
+  color: var(--muted-text);
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.progress-message {
+  color: var(--card-text);
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--card-border);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: progress-shimmer 1.5s infinite;
+}
+
+@keyframes progress-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.progress-percentage {
+  color: var(--muted-text);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* =========================
+   PULSING DOTS
+========================= */
+
+.pulsing-dots-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.pulsing-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3b82f6;
+  animation: pulse-dot 1.4s ease-in-out infinite both;
+}
+
+.dot:nth-child(1) { animation-delay: -0.32s; }
+.dot:nth-child(2) { animation-delay: -0.16s; }
+.dot:nth-child(3) { animation-delay: 0s; }
+
+@keyframes pulse-dot {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.pulsing-message {
+  color: var(--muted-text);
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* =========================
+   FORM LOADING OVERLAY
+========================= */
+
+.form-loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  z-index: 1000;
+}
+
+.form-loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--card-bg);
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+}
+
+.form-loading-message {
+  color: var(--card-text);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .skeleton-header {
+    gap: 12px;
+  }
+  
+  .skeleton-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .skeleton-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .loading-spinner-container {
+    padding: 24px;
+  }
+  
+  .form-loading-content {
+    padding: 24px;
+    margin: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .skeleton-card,
+  .skeleton-score-card,
+  .skeleton-chart {
+    padding: 16px;
+  }
+  
+  .skeleton-chart-bars {
+    gap: 8px;
+  }
+}

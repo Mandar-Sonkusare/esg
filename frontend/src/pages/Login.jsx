@@ -2,12 +2,15 @@ import { useState } from "react";
 import API from "../api/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { PulsingDots } from "../components/LoadingComponents";
+import { useToast, ToastContainer } from "../components/NotificationSystem";
 import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { toasts, showSuccess, showError, removeToast } = useToast();
 
   const handleLogin = async () => {
     try {
@@ -24,11 +27,22 @@ function Login() {
       localStorage.setItem("refreshToken", res.data.refreshToken);
       localStorage.setItem("userEmail", email);
 
-      // redirect to home page
-      window.location.href = "/home";
+      showSuccess(
+        "Login Successful!",
+        "Welcome back! Redirecting to your dashboard...",
+        { duration: 2000 }
+      );
+
+      // redirect to home page after short delay
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1500);
     } catch (err) {
       console.error("LOGIN ERROR:", err);
-      alert("Login failed");
+      showError(
+        "Login Failed",
+        err.response?.data?.message || "Invalid email or password. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -43,6 +57,8 @@ function Login() {
   return (
     <>
       <Navbar />
+      
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
       
       <div className="login-page">
         <div className="login-container">
@@ -82,7 +98,11 @@ function Login() {
                 disabled={loading || !email || !password}
                 className="login-button"
               >
-                {loading ? "Signing in..." : "Sign In"}
+                {loading ? (
+                  <PulsingDots message="" />
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </div>
 

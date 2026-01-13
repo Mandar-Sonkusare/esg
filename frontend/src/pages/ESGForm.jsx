@@ -2,10 +2,16 @@ import { useState } from "react";
 import API from "../api/api";
 import AuthNavbar from "../components/AuthNavbar";
 import Footer from "../components/Footer";
+import { FormLoadingOverlay, ProgressBar } from "../components/LoadingComponents";
+import { SuccessModal, useToast, ToastContainer } from "../components/NotificationSystem";
 import "./ESGForm.css";
 
 function ESGForm() {
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState(null);
+  const { toasts, showError, removeToast } = useToast();
 
   const [form, setForm] = useState({
     carbonEmissions: "",
@@ -36,6 +42,11 @@ function ESGForm() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      setProgress(0);
+
+      // Simulate progress steps
+      setProgress(20);
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       const payload = {
         fossilFuel: {
@@ -82,28 +93,93 @@ function ESGForm() {
         },
       };
 
+      setProgress(60);
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       const response = await API.post("/esg/submit", payload);
 
-      alert(
-        `ESG data submitted successfully! 🎉\n\nScores:\n• Environmental: ${response.data.scores.environmentalScore}\n• Social: ${response.data.scores.socialScore}\n• Governance: ${response.data.scores.governanceScore}\n• Overall ESG: ${response.data.scores.overallESGScore}`
-      );
+      setProgress(100);
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // Store results for success modal
+      setSubmissionResult({
+        scores: response.data.scores,
+        message: "Your ESG data has been successfully processed and scored!"
+      });
+      setShowSuccessModal(true);
+      
     } catch (error) {
-      alert(
-        "ESG submission failed: " +
-          (error.response?.data?.message || error.message)
+      showError(
+        "Submission Failed",
+        error.response?.data?.message || error.message || "An unexpected error occurred"
       );
       console.error(error);
     } finally {
       setLoading(false);
+      setProgress(0);
     }
   };
 
   return (
     <>
       <AuthNavbar />
+      
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      
+      {showSuccessModal && submissionResult && (
+        <SuccessModal
+          isOpen={showSuccessModal}
+          title="ESG Submission Successful!"
+          message={submissionResult.message}
+          details={[
+            { label: "Environmental Score", value: `${submissionResult.scores.environmentalScore}/100` },
+            { label: "Social Score", value: `${submissionResult.scores.socialScore}/100` },
+            { label: "Governance Score", value: `${submissionResult.scores.governanceScore}/100` },
+            { label: "Overall ESG Score", value: `${submissionResult.scores.overallESGScore}/100` }
+          ]}
+          primaryAction={{
+            label: "View Dashboard",
+            onClick: () => window.location.href = '/dashboard'
+          }}
+          secondaryAction={{
+            label: "Submit Another",
+            onClick: () => {
+              // Reset form
+              setForm({
+                carbonEmissions: "",
+                renewableEnergy: "",
+                waterUsage: "",
+                wasteRecycled: "",
+                environmentalFines: "",
+                employeeTurnover: "",
+                injuryRate: "",
+                genderDiversity: "",
+                trainingHours: "",
+                communityInvestment: "",
+                boardIndependence: "",
+                executivePayRatio: "",
+                shareholderRights: "",
+                auditCommittee: false,
+                antiCorruption: false,
+              });
+            }
+          }}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
 
       <div className="esg-page">
-        <div className="esg-container">
+        <div className="esg-container" style={{ position: 'relative' }}>
+          {loading && (
+            <FormLoadingOverlay>
+              <ProgressBar 
+                progress={progress} 
+                message="Processing your ESG data..." 
+                showPercentage={true}
+              />
+            </FormLoadingOverlay>
+          )}
+          
           <h2 className="page-title">Comprehensive ESG Data Submission</h2>
           <p className="page-subtitle">
             Submit your organization's Environmental, Social, and Governance

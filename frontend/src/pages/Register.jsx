@@ -2,6 +2,8 @@ import { useState } from "react";
 import API from "../api/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { PulsingDots } from "../components/LoadingComponents";
+import { useToast, ToastContainer } from "../components/NotificationSystem";
 import "./Register.css";
 
 function Register() {
@@ -9,15 +11,16 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { toasts, showSuccess, showError, showWarning, removeToast } = useToast();
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords don't match");
+      showWarning("Password Mismatch", "Please make sure both passwords match.");
       return;
     }
 
     if (password.length < 6) {
-      alert("Password must be at least 6 characters");
+      showWarning("Password Too Short", "Password must be at least 6 characters long.");
       return;
     }
 
@@ -26,13 +29,22 @@ function Register() {
 
       const res = await API.post("/auth/register", { email, password });
 
-      alert("Registration successful! Please login.");
+      showSuccess(
+        "Registration Successful!",
+        "Your account has been created. Redirecting to login...",
+        { duration: 3000 }
+      );
       
-      // redirect to login
-      window.location.href = "/login";
+      // redirect to login after delay
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
     } catch (err) {
       console.error("REGISTRATION ERROR:", err);
-      alert("Registration failed: " + (err.response?.data?.message || err.message));
+      showError(
+        "Registration Failed",
+        err.response?.data?.message || "An error occurred during registration. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -47,6 +59,8 @@ function Register() {
   return (
     <>
       <Navbar />
+      
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
       
       <div className="register-page">
         <div className="register-container">
@@ -98,7 +112,11 @@ function Register() {
                 disabled={loading || !email || !password || !confirmPassword}
                 className="register-button"
               >
-                {loading ? "Creating Account..." : "Create Account"}
+                {loading ? (
+                  <PulsingDots message="" />
+                ) : (
+                  "Create Account"
+                )}
               </button>
             </div>
 

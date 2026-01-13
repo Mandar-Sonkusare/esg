@@ -103,6 +103,10 @@
   transition: all 0.3s ease;
   margin-top: 8px;
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
 }
 
 .register-button:hover:not(:disabled) {

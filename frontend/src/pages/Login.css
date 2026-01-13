@@ -136,6 +136,10 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
 }
 
 .login-button:hover:not(:disabled) {

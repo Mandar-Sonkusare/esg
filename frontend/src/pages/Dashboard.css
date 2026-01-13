@@ -503,6 +503,21 @@ body {
   max-width: 500px;
 }
 
+/* Skeleton Overall Card Styling */
+.overall-skeleton {
+  position: relative;
+}
+
+.overall-skeleton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4CAF50, #2196F3, #FF9800);
+}
+
 /* =========================
    EMPTY STATE
 ========================= */

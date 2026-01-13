@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import API from "../api/api";
 import AuthNavbar from "../components/AuthNavbar";
 import Footer from "../components/Footer";
+import { SkeletonCard, SkeletonScoreCard, SkeletonChart } from "../components/LoadingComponents";
 import "./Dashboard.css";
 
 import {
@@ -124,16 +125,41 @@ function Dashboard() {
     }
   });
 
-  // Loading component
+  // Loading component with skeleton screens
   const LoadingState = () => (
-    <div className="dashboard-page">
-      <div className="dashboard-container">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <h3 className="loading-text">Loading your ESG dashboard...</h3>
+    <>
+      <AuthNavbar />
+      <div className="dashboard-page">
+        <div className="dashboard-container">
+          <div className="dashboard-header">
+            <h2 className="dashboard-title">ESG Performance Dashboard</h2>
+            <p className="dashboard-subtitle">
+              Track your Environmental, Social, and Governance metrics
+            </p>
+          </div>
+
+          {/* Skeleton Overall Card */}
+          <SkeletonCard height="200px" className="overall-skeleton" />
+
+          {/* Skeleton Score Grid */}
+          <div className="score-grid">
+            <SkeletonScoreCard />
+            <SkeletonScoreCard />
+            <SkeletonScoreCard />
+          </div>
+
+          {/* Skeleton Charts */}
+          <div className="charts-grid">
+            <SkeletonChart height="300px" />
+            <SkeletonChart height="300px" />
+          </div>
+
+          {/* Skeleton Trend Chart */}
+          <SkeletonChart height="300px" />
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 
   // Error component
