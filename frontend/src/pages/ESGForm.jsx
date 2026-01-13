@@ -33,21 +33,21 @@ function ESGForm() {
     antiCorruption: false,
   });
 
-  // Validation rules
+  // Validation rules - Only essential fields for ESG calculation are required
   const validationRules = {
-    carbonEmissions: { min: 0, max: 100000, required: false, label: "Carbon Emissions" },
+    carbonEmissions: { min: 0, max: 100000, required: true, label: "Carbon Emissions" },
     renewableEnergy: { min: 0, max: 100, required: false, label: "Renewable Energy %" },
     waterUsage: { min: 0, max: 50000, required: false, label: "Water Usage" },
     wasteRecycled: { min: 0, max: 100, required: false, label: "Waste Recycled %" },
     environmentalFines: { min: 0, max: 10000000, required: false, label: "Environmental Fines" },
     employeeTurnover: { min: 0, max: 100, required: true, label: "Employee Turnover %" },
-    injuryRate: { min: 0, max: 50, required: true, label: "Injury Rate" },
+    injuryRate: { min: 0, max: 50, required: false, label: "Injury Rate" },
     genderDiversity: { min: 0, max: 100, required: true, label: "Gender Diversity %" },
-    trainingHours: { min: 0, max: 200, required: true, label: "Training Hours" },
-    communityInvestment: { min: 0, max: 20, required: true, label: "Community Investment %" },
+    trainingHours: { min: 0, max: 200, required: false, label: "Training Hours" },
+    communityInvestment: { min: 0, max: 20, required: false, label: "Community Investment %" },
     boardIndependence: { min: 0, max: 100, required: true, label: "Board Independence %" },
-    executivePayRatio: { min: 1, max: 1000, required: true, label: "Executive Pay Ratio" },
-    shareholderRights: { min: 0, max: 10, required: true, label: "Shareholder Rights Score" },
+    executivePayRatio: { min: 1, max: 1000, required: false, label: "Executive Pay Ratio" },
+    shareholderRights: { min: 0, max: 10, required: false, label: "Shareholder Rights Score" },
   };
 
   // Validate individual field
@@ -65,9 +65,10 @@ function ESGForm() {
       return null;
     }
 
+    // For numeric fields, validate the number
     const numValue = parseFloat(value);
 
-    // Check if it's a valid number
+    // Check if it's a valid number (but allow empty strings for optional fields)
     if (isNaN(numValue)) {
       return `${rules.label} must be a valid number`;
     }
@@ -120,22 +121,33 @@ function ESGForm() {
   };
 
   // Input component with validation
-  const ValidatedInput = ({ name, placeholder, type = "number", required = false }) => {
+  const ValidatedInput = ({ name, placeholder }) => {
     const hasError = errors[name] && touched[name];
     const isRequired = validationRules[name]?.required;
+    
+    const handleInputChange = (e) => {
+      const { value } = e.target;
+      // Allow empty string, numbers, and decimal points
+      if (value === '' || /^\d*\.?\d*$/.test(value)) {
+        setForm(prev => ({
+          ...prev,
+          [name]: value,
+        }));
+      }
+    };
     
     return (
       <div className="input-wrapper">
         <input
           name={name}
-          type={type}
+          type="text"
           placeholder={placeholder}
-          value={form[name]}
-          onChange={handleChange}
-          onBlur={() => setTouched({ ...touched, [name]: true })}
+          value={form[name] || ''}
+          onChange={handleInputChange}
+          onBlur={handleBlur}
           className={`input ${hasError ? 'input-error' : ''} ${isRequired ? 'input-required' : ''}`}
-          min={validationRules[name]?.min}
-          max={validationRules[name]?.max}
+          inputMode="decimal"
+          autoComplete="off"
         />
         {hasError && (
           <span className="error-message">
@@ -151,31 +163,44 @@ function ESGForm() {
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === "checkbox" ? checked : value;
+    const { name, checked } = e.target;
+    // This is only for checkboxes now
+    setForm(prev => ({
+      ...prev,
+      [name]: checked,
+    }));
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
     
-    setForm({
-      ...form,
-      [name]: newValue,
-    });
-
     // Mark field as touched
-    setTouched({
-      ...touched,
+    setTouched(prev => ({
+      ...prev,
       [name]: true,
-    });
+    }));
 
-    // Validate field in real-time
-    if (type !== "checkbox") {
-      const error = validateField(name, newValue);
-      setErrors(prev => ({
-        ...prev,
-        [name]: error
-      }));
-    }
+    // Validate field on blur
+    const error = validateField(name, value);
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      if (error) {
+        newErrors[name] = error;
+      } else {
+        delete newErrors[name];
+      }
+      return newErrors;
+    });
   };
 
   const handleSubmit = async () => {
+    // Mark all fields as touched to show validation errors
+    const allTouched = {};
+    Object.keys(validationRules).forEach(field => {
+      allTouched[field] = true;
+    });
+    setTouched(allTouched);
+
     // Validate form before submission
     if (!validateForm()) {
       showError(
@@ -223,18 +248,18 @@ function ESGForm() {
           carbonOffsets: Number(form.environmentalFines) || 0,
         },
         social: {
-          employeeTurnoverPercent: Number(form.employeeTurnover),
-          injuryRate: Number(form.injuryRate),
-          genderDiversityPercent: Number(form.genderDiversity),
-          trainingHoursPerEmployee: Number(form.trainingHours),
-          communityInvestmentPercent: Number(form.communityInvestment),
+          employeeTurnoverPercent: Number(form.employeeTurnover) || 0,
+          injuryRate: Number(form.injuryRate) || 0,
+          genderDiversityPercent: Number(form.genderDiversity) || 0,
+          trainingHoursPerEmployee: Number(form.trainingHours) || 0,
+          communityInvestmentPercent: Number(form.communityInvestment) || 0,
         },
         governance: {
-          boardIndependencePercent: Number(form.boardIndependence),
+          boardIndependencePercent: Number(form.boardIndependence) || 0,
           auditCommittee: form.auditCommittee,
           antiCorruptionPolicy: form.antiCorruption,
-          executivePayRatio: Number(form.executivePayRatio),
-          shareholderRightsScore: Number(form.shareholderRights),
+          executivePayRatio: Number(form.executivePayRatio) || 1,
+          shareholderRightsScore: Number(form.shareholderRights) || 0,
         },
       };
 
@@ -328,7 +353,7 @@ function ESGForm() {
           <h2 className="page-title">Comprehensive ESG Data Submission</h2>
           <p className="page-subtitle">
             Submit your organization's Environmental, Social, and Governance
-            metrics for professional ESG scoring
+            metrics for professional ESG scoring. Fields marked with * are required for accurate scoring.
           </p>
 
           {/* Form Progress Indicator */}
@@ -369,6 +394,7 @@ function ESGForm() {
             <h3 className="section-title">
               <span className="section-icon">🌱</span>
               Environmental Metrics
+              <span className="section-note">Carbon emissions data is essential for scoring</span>
             </h3>
             <div className="inputs-grid">
               <ValidatedInput
@@ -399,32 +425,28 @@ function ESGForm() {
             <h3 className="section-title">
               <span className="section-icon">👥</span>
               Social Metrics
+              <span className="section-note">Employee turnover and diversity data required</span>
             </h3>
             <div className="inputs-grid">
               <ValidatedInput
                 name="employeeTurnover"
                 placeholder="Employee Turnover %"
-                required
               />
               <ValidatedInput
                 name="injuryRate"
                 placeholder="Injury Rate (per 100)"
-                required
               />
               <ValidatedInput
                 name="genderDiversity"
                 placeholder="Gender Diversity %"
-                required
               />
               <ValidatedInput
                 name="trainingHours"
                 placeholder="Training Hours per Employee"
-                required
               />
               <ValidatedInput
                 name="communityInvestment"
                 placeholder="Community Investment %"
-                required
               />
             </div>
           </div>
@@ -434,22 +456,20 @@ function ESGForm() {
             <h3 className="section-title">
               <span className="section-icon">⚖️</span>
               Governance Metrics
+              <span className="section-note">Board independence data required</span>
             </h3>
             <div className="inputs-grid">
               <ValidatedInput
                 name="boardIndependence"
                 placeholder="Board Independence %"
-                required
               />
               <ValidatedInput
                 name="executivePayRatio"
                 placeholder="Executive Pay Ratio"
-                required
               />
               <ValidatedInput
                 name="shareholderRights"
                 placeholder="Shareholder Rights (0-10)"
-                required
               />
             </div>
 
