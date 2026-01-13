@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./navbar.css"; // 🔧 move styles to CSS (important)
+import "./navbar.css";
 
 function Navbar() {
   const [theme, setTheme] = useState(
@@ -14,7 +14,10 @@ function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        <h3 className="navbar-title">ESG Dashboard</h3>
+        <div className="navbar-brand">
+          <div className="brand-icon">📊</div>
+          <h3 className="navbar-title">ESG Dashboard</h3>
+        </div>
 
         <button
           className="theme-toggle"
@@ -22,7 +25,7 @@ function Navbar() {
             setTheme(theme === "light" ? "dark" : "light")
           }
         >
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+          {theme === "light" ? "🌙" : "☀️"}
         </button>
       </div>
     </header>

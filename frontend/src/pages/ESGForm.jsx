@@ -110,128 +110,147 @@ function ESGForm() {
           </p>
 
           {/* Environmental Section */}
-          <div className="section">
-            <h3 className="section-title">🌱 Environmental Metrics</h3>
-            <input
-              name="carbonEmissions"
-              placeholder="Carbon Emissions (tons)"
-              value={form.carbonEmissions}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="renewableEnergy"
-              placeholder="Renewable Energy %"
-              value={form.renewableEnergy}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="waterUsage"
-              placeholder="Water Usage (m³)"
-              value={form.waterUsage}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="wasteRecycled"
-              placeholder="Waste Recycled %"
-              value={form.wasteRecycled}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="environmentalFines"
-              placeholder="Environmental Fines $"
-              value={form.environmentalFines}
-              onChange={handleChange}
-              className="input"
-            />
+          <div className="section environmental-section">
+            <h3 className="section-title">
+              <span className="section-icon">🌱</span>
+              Environmental Metrics
+            </h3>
+            <div className="inputs-grid">
+              <input
+                name="carbonEmissions"
+                placeholder="Carbon Emissions (tons)"
+                value={form.carbonEmissions}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="renewableEnergy"
+                placeholder="Renewable Energy %"
+                value={form.renewableEnergy}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="waterUsage"
+                placeholder="Water Usage (m³)"
+                value={form.waterUsage}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="wasteRecycled"
+                placeholder="Waste Recycled %"
+                value={form.wasteRecycled}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="environmentalFines"
+                placeholder="Environmental Fines $"
+                value={form.environmentalFines}
+                onChange={handleChange}
+                className="input"
+              />
+            </div>
           </div>
 
           {/* Social Section */}
-          <div className="section">
-            <h3 className="section-title">👥 Social Metrics</h3>
-            <input
-              name="employeeTurnover"
-              placeholder="Employee Turnover %"
-              value={form.employeeTurnover}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="injuryRate"
-              placeholder="Injury Rate (per 100)"
-              value={form.injuryRate}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="genderDiversity"
-              placeholder="Gender Diversity %"
-              value={form.genderDiversity}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="trainingHours"
-              placeholder="Training Hours per Employee"
-              value={form.trainingHours}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="communityInvestment"
-              placeholder="Community Investment %"
-              value={form.communityInvestment}
-              onChange={handleChange}
-              className="input"
-            />
+          <div className="section social-section">
+            <h3 className="section-title">
+              <span className="section-icon">👥</span>
+              Social Metrics
+            </h3>
+            <div className="inputs-grid">
+              <input
+                name="employeeTurnover"
+                placeholder="Employee Turnover %"
+                value={form.employeeTurnover}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="injuryRate"
+                placeholder="Injury Rate (per 100)"
+                value={form.injuryRate}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="genderDiversity"
+                placeholder="Gender Diversity %"
+                value={form.genderDiversity}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="trainingHours"
+                placeholder="Training Hours per Employee"
+                value={form.trainingHours}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="communityInvestment"
+                placeholder="Community Investment %"
+                value={form.communityInvestment}
+                onChange={handleChange}
+                className="input"
+              />
+            </div>
           </div>
 
           {/* Governance Section */}
-          <div className="section">
-            <h3 className="section-title">⚖️ Governance Metrics</h3>
-            <input
-              name="boardIndependence"
-              placeholder="Board Independence %"
-              value={form.boardIndependence}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="executivePayRatio"
-              placeholder="Executive Pay Ratio"
-              value={form.executivePayRatio}
-              onChange={handleChange}
-              className="input"
-            />
-            <input
-              name="shareholderRights"
-              placeholder="Shareholder Rights (0-10)"
-              value={form.shareholderRights}
-              onChange={handleChange}
-              className="input"
-            />
+          <div className="section governance-section">
+            <h3 className="section-title">
+              <span className="section-icon">⚖️</span>
+              Governance Metrics
+            </h3>
+            <div className="inputs-grid">
+              <input
+                name="boardIndependence"
+                placeholder="Board Independence %"
+                value={form.boardIndependence}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="executivePayRatio"
+                placeholder="Executive Pay Ratio"
+                value={form.executivePayRatio}
+                onChange={handleChange}
+                className="input"
+              />
+              <input
+                name="shareholderRights"
+                placeholder="Shareholder Rights (0-10)"
+                value={form.shareholderRights}
+                onChange={handleChange}
+                className="input"
+              />
+            </div>
 
-            <label className="checkbox">
-              <input
-                type="checkbox"
-                name="auditCommittee"
-                checked={form.auditCommittee}
-                onChange={handleChange}
-              />
-              Independent Audit Committee
-            </label>
-            <label className="checkbox">
-              <input
-                type="checkbox"
-                name="antiCorruption"
-                checked={form.antiCorruption}
-                onChange={handleChange}
-              />
-              Anti-Corruption Policy
-            </label>
+            <div className="checkboxes-container">
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  name="auditCommittee"
+                  checked={form.auditCommittee}
+                  onChange={handleChange}
+                />
+                <span className="checkbox-icon">✓</span>
+                Independent Audit Committee
+              </label>
+              <label className="checkbox">
+                <input
+                  type="checkbox"
+                  name="antiCorruption"
+                  checked={form.antiCorruption}
+                  onChange={handleChange}
+                />
+                <span className="checkbox-icon">✓</span>
+                Anti-Corruption Policy
+              </label>
+            </div>
           </div>
 
           <button
@@ -239,6 +258,7 @@ function ESGForm() {
             disabled={loading}
             className="submit-btn"
           >
+            <span className="submit-icon">📊</span>
             {loading ? "Calculating ESG Scores..." : "Submit ESG Data"}
           </button>
         </div>
