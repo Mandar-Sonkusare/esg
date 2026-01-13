@@ -23,8 +23,8 @@ function Login() {
       localStorage.setItem("refreshToken", res.data.refreshToken);
       localStorage.setItem("userEmail", email);
 
-      // redirect to dashboard
-      window.location.href = "/dashboard";
+      // redirect to home page
+      window.location.href = "/home";
     } catch (err) {
       console.error("LOGIN ERROR:", err);
       alert("Login failed");

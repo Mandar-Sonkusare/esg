@@ -25,7 +25,7 @@ function AuthNavbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        <div className="navbar-brand" onClick={() => navigateTo("/dashboard")}>
+        <div className="navbar-brand" onClick={() => navigateTo("/home")}>
           <div className="brand-icon">📊</div>
           <h3 className="navbar-title">ESG Dashboard</h3>
         </div>
@@ -33,9 +33,16 @@ function AuthNavbar() {
         <nav className="nav-links">
           <button 
             className="nav-button"
-            onClick={() => navigateTo("/dashboard")}
+            onClick={() => navigateTo("/home")}
           >
             <span className="nav-icon">🏠</span>
+            Home
+          </button>
+          <button 
+            className="nav-button"
+            onClick={() => navigateTo("/dashboard")}
+          >
+            <span className="nav-icon">📊</span>
             Dashboard
           </button>
           <button 
