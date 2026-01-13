@@ -25,37 +25,46 @@ function AuthNavbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
-        <h3 className="navbar-title">ESG Dashboard</h3>
+        <div className="navbar-brand" onClick={() => navigateTo("/dashboard")}>
+          <div className="brand-icon">📊</div>
+          <h3 className="navbar-title">ESG Dashboard</h3>
+        </div>
         
         <nav className="nav-links">
           <button 
             className="nav-button"
             onClick={() => navigateTo("/dashboard")}
           >
+            <span className="nav-icon">🏠</span>
             Dashboard
           </button>
           <button 
             className="nav-button"
             onClick={() => navigateTo("/esg")}
           >
+            <span className="nav-icon">📝</span>
             Fill a form
           </button>
+        </nav>
+
+        <div className="navbar-actions">
+          <button
+            className="theme-toggle"
+            onClick={() =>
+              setTheme(theme === "light" ? "dark" : "light")
+            }
+          >
+            {theme === "light" ? "🌙" : "☀️"}
+          </button>
+          
           <button 
             className="logout-button"
             onClick={handleLogout}
           >
+            <span className="logout-icon">🚪</span>
             Logout
           </button>
-        </nav>
-
-        <button
-          className="theme-toggle"
-          onClick={() =>
-            setTheme(theme === "light" ? "dark" : "light")
-          }
-        >
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-        </button>
+        </div>
       </div>
     </header>
   );
