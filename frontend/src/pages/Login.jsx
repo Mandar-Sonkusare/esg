@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/api";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./Login.css";
 
 function Login() {
@@ -93,6 +94,8 @@ function Login() {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </>
   );
 }

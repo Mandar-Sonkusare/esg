@@ -148,11 +148,19 @@ body {
 .overall-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 20px;
-  padding: 48px 32px;
+  border-radius: 24px;
+  padding: 40px 32px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.overall-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .overall-card::before {
@@ -165,34 +173,91 @@ body {
   background: linear-gradient(90deg, #4CAF50, #2196F3, #FF9800);
 }
 
+.overall-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
 .overall-content h3 {
-  margin: 0 0 20px;
-  font-size: 20px;
+  margin: 0;
+  font-size: 24px;
   color: var(--card-text);
+  font-weight: 700;
+}
+
+.score-trend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trend-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.trend-label {
+  font-size: 12px;
+  color: var(--muted-text);
   font-weight: 500;
 }
 
 .score-display {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 32px;
 }
 
-.score-display h1 {
+.score-circle {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.score-circle h1 {
   margin: 0;
-  font-size: 80px;
+  font-size: 48px;
   font-weight: 800;
-  color: var(--card-text);
   line-height: 1;
+}
+
+.score-max {
+  font-size: 14px;
+  color: var(--muted-text);
+  font-weight: 600;
+  margin-top: -8px;
+}
+
+.score-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
 }
 
 .score-rating {
   font-size: 18px;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: rgba(76, 175, 80, 0.1);
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.score-description {
+  font-size: 14px;
+  color: var(--muted-text);
+  line-height: 1.5;
+  max-width: 200px;
 }
 
 /* =========================
@@ -207,19 +272,18 @@ body {
 .score-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .score-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .score-card.environmental::before {
@@ -229,7 +293,7 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: #4CAF50;
+  background: linear-gradient(90deg, #4CAF50, #45a049);
 }
 
 .score-card.social::before {
@@ -239,7 +303,7 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: #2196F3;
+  background: linear-gradient(90deg, #2196F3, #1976d2);
 }
 
 .score-card.governance::before {
@@ -249,55 +313,98 @@ body {
   left: 0;
   right: 0;
   height: 3px;
-  background: #FF9800;
+  background: linear-gradient(90deg, #FF9800, #f57c00);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .card-icon {
-  font-size: 32px;
-  flex-shrink: 0;
+  font-size: 36px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
+}
+
+.card-trend {
+  display: flex;
+  align-items: center;
+}
+
+.trend-indicator {
+  font-size: 18px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .card-content {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .card-content h4 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   color: var(--card-text);
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.score-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-content .score {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--card-text);
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .score-bar {
   width: 100%;
-  height: 6px;
+  height: 8px;
   background: var(--card-border);
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
+  position: relative;
 }
 
 .score-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #45a049);
-  border-radius: 3px;
-  transition: width 0.8s ease;
+  border-radius: 4px;
+  transition: width 1s ease;
+  position: relative;
 }
 
-.social .score-fill {
-  background: linear-gradient(90deg, #2196F3, #1976D2);
+.score-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
 }
 
-.governance .score-fill {
-  background: linear-gradient(90deg, #FF9800, #F57C00);
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* =========================
@@ -342,6 +449,58 @@ body {
 .radar-container {
   height: 400px;
   padding: 10px;
+}
+
+/* =========================
+   WELCOME STATE (NEW USERS)
+========================= */
+.welcome-state {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 60px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-state::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4CAF50, #2196F3, #FF9800);
+}
+
+.welcome-icon {
+  font-size: 64px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.welcome-title {
+  color: var(--title-text);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-message {
+  color: var(--muted-text);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 500px;
 }
 
 /* =========================
@@ -421,8 +580,32 @@ body {
     grid-template-columns: 1fr;
   }
   
-  .score-display h1 {
-    font-size: 64px;
+  .score-display {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .score-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .score-circle h1 {
+    font-size: 36px;
+  }
+  
+  .score-info {
+    text-align: center;
+  }
+  
+  .score-description {
+    max-width: none;
+  }
+  
+  .overall-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
   }
   
   .chart-box {
@@ -432,22 +615,48 @@ body {
   .overall-card {
     padding: 32px 24px;
   }
+  
+  .welcome-state {
+    padding: 40px 24px;
+  }
+  
+  .welcome-title {
+    font-size: 24px;
+  }
+  
+  .welcome-message {
+    font-size: 16px;
+  }
+  
+  .welcome-icon {
+    font-size: 48px;
+  }
 }
 
 @media (max-width: 480px) {
   .score-card {
     padding: 20px;
-    flex-direction: column;
-    text-align: center;
-    gap: 16px;
+  }
+  
+  .card-header {
+    margin-bottom: 16px;
+  }
+  
+  .card-icon {
+    font-size: 28px;
   }
   
   .card-content .score {
-    font-size: 24px;
+    font-size: 28px;
   }
   
-  .score-display h1 {
-    font-size: 48px;
+  .score-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .score-circle h1 {
+    font-size: 28px;
   }
   
   .chart-container {
@@ -456,5 +665,13 @@ body {
   
   .radar-container {
     height: 280px;
+  }
+  
+  .overall-card {
+    padding: 24px 20px;
+  }
+  
+  .welcome-state {
+    padding: 32px 20px;
   }
 }

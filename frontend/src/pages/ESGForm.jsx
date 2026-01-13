@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/api";
 import AuthNavbar from "../components/AuthNavbar";
+import Footer from "../components/Footer";
 import "./ESGForm.css";
 
 function ESGForm() {
@@ -263,6 +264,8 @@ function ESGForm() {
           </button>
         </div>
       </div>
+      
+      <Footer />
     </>
   );
 }

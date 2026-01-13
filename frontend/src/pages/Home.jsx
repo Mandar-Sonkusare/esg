@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AuthNavbar from "../components/AuthNavbar";
+import Footer from "../components/Footer";
 import "./Home.css";
 
 function Home() {
@@ -330,6 +331,8 @@ function Home() {
           </div>
         </section>
       </div>
+      
+      <Footer />
     </>
   );
 }

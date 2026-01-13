@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import API from "../api/api";
 import AuthNavbar from "../components/AuthNavbar";
+import Footer from "../components/Footer";
 import "./Dashboard.css";
 
 import {
@@ -53,7 +54,15 @@ function Dashboard() {
         setTrend(trendResponse.data || []);
       } catch (err) {
         console.error("Dashboard data fetch error:", err);
-        setError("Failed to load ESG data. Please try refreshing the page.");
+        
+        // Check if it's a 404 (no data) vs actual error
+        if (err.response?.status === 404 || err.response?.data?.message?.includes("No ESG data")) {
+          // This is a new user with no data - don't set error, leave esg as null
+          setEsg(null);
+        } else {
+          // This is an actual error
+          setError("Failed to load ESG data. Please try refreshing the page.");
+        }
       } finally {
         setLoading(false);
       }
@@ -145,10 +154,24 @@ function Dashboard() {
 
   // Score rating helper
   const getScoreRating = (score) => {
-    if (score >= 80) return { label: "Excellent", color: "#4CAF50" };
-    if (score >= 60) return { label: "Good", color: "#2196F3" };
-    if (score >= 40) return { label: "Fair", color: "#FF9800" };
-    return { label: "Needs Improvement", color: "#f44336" };
+    if (score >= 80) return { label: "Excellent", color: "#4CAF50", bgColor: "rgba(76, 175, 80, 0.1)", trend: "↗️" };
+    if (score >= 60) return { label: "Good", color: "#2196F3", bgColor: "rgba(33, 150, 243, 0.1)", trend: "↗️" };
+    if (score >= 40) return { label: "Fair", color: "#FF9800", bgColor: "rgba(255, 152, 0, 0.1)", trend: "→" };
+    return { label: "Needs Improvement", color: "#f44336", bgColor: "rgba(244, 67, 54, 0.1)", trend: "↘️" };
+  };
+
+  // Get individual score ratings
+  const getIndividualScoreData = (score, type) => {
+    const rating = getScoreRating(score);
+    const icons = {
+      environmental: "🌱",
+      social: "👥", 
+      governance: "⚖️"
+    };
+    return {
+      ...rating,
+      icon: icons[type]
+    };
   };
 
   if (loading) return <LoadingState />;
@@ -169,10 +192,23 @@ function Dashboard() {
     return (
       <>
         <AuthNavbar />
-        <ErrorState 
-          message="No ESG data available. Please submit your ESG data first." 
-          onRetry={() => window.location.href = '/esg'} 
-        />
+        <div className="dashboard-page">
+          <div className="dashboard-container">
+            <div className="welcome-state">
+              <div className="welcome-icon">📊</div>
+              <h3 className="welcome-title">Welcome to Your ESG Dashboard!</h3>
+              <p className="welcome-message">
+                Get started by submitting your ESG data to see comprehensive analytics and insights.
+              </p>
+              <button 
+                onClick={() => window.location.href = '/esg'} 
+                className="cta-button"
+              >
+                Fill ESG Form
+              </button>
+            </div>
+          </div>
+        </div>
       </>
     );
   }
@@ -242,11 +278,28 @@ function Dashboard() {
 
           <div className="overall-card">
             <div className="overall-content">
-              <h3>Overall ESG Score</h3>
+              <div className="overall-header">
+                <h3>Overall ESG Score</h3>
+                <div className="score-trend">
+                  <span className="trend-icon">{overallRating.trend}</span>
+                  <span className="trend-label">Current Performance</span>
+                </div>
+              </div>
               <div className="score-display">
-                <h1>{Math.round(esg.overallESGScore)}</h1>
-                <div className="score-rating" style={{ color: overallRating.color }}>
-                  {overallRating.label}
+                <div className="score-circle" style={{ background: overallRating.bgColor, borderColor: overallRating.color }}>
+                  <h1 style={{ color: overallRating.color }}>{Math.round(esg.overallESGScore)}</h1>
+                  <div className="score-max">/100</div>
+                </div>
+                <div className="score-info">
+                  <div className="score-rating" style={{ color: overallRating.color, background: overallRating.bgColor }}>
+                    {overallRating.label}
+                  </div>
+                  <div className="score-description">
+                    {overallRating.label === "Excellent" && "Outstanding ESG performance! Keep up the great work."}
+                    {overallRating.label === "Good" && "Strong ESG performance with room for improvement."}
+                    {overallRating.label === "Fair" && "Moderate ESG performance. Consider improvement strategies."}
+                    {overallRating.label === "Needs Improvement" && "Focus on enhancing your ESG practices."}
+                  </div>
                 </div>
               </div>
             </div>
@@ -254,42 +307,87 @@ function Dashboard() {
 
           <div className="score-grid">
             <div className="score-card environmental">
-              <div className="card-icon">🌱</div>
+              <div className="card-header">
+                <div className="card-icon">🌱</div>
+                <div className="card-trend">
+                  <span className="trend-indicator">{getIndividualScoreData(esg.environmentalScore, 'environmental').trend}</span>
+                </div>
+              </div>
               <div className="card-content">
                 <h4>Environmental</h4>
-                <span className="score">{esg.environmentalScore}</span>
+                <div className="score-section">
+                  <span className="score" style={{ color: getIndividualScoreData(esg.environmentalScore, 'environmental').color }}>
+                    {esg.environmentalScore}
+                  </span>
+                  <span className="score-label" style={{ color: getIndividualScoreData(esg.environmentalScore, 'environmental').color }}>
+                    {getIndividualScoreData(esg.environmentalScore, 'environmental').label}
+                  </span>
+                </div>
                 <div className="score-bar">
                   <div 
-                    className="score-fill" 
-                    style={{ width: `${esg.environmentalScore}%` }}
+                    className="score-fill environmental" 
+                    style={{ 
+                      width: `${esg.environmentalScore}%`,
+                      background: `linear-gradient(90deg, ${getIndividualScoreData(esg.environmentalScore, 'environmental').color}, ${getIndividualScoreData(esg.environmentalScore, 'environmental').color}dd)`
+                    }}
                   ></div>
                 </div>
               </div>
             </div>
             
             <div className="score-card social">
-              <div className="card-icon">👥</div>
+              <div className="card-header">
+                <div className="card-icon">👥</div>
+                <div className="card-trend">
+                  <span className="trend-indicator">{getIndividualScoreData(esg.socialScore, 'social').trend}</span>
+                </div>
+              </div>
               <div className="card-content">
                 <h4>Social</h4>
-                <span className="score">{esg.socialScore}</span>
+                <div className="score-section">
+                  <span className="score" style={{ color: getIndividualScoreData(esg.socialScore, 'social').color }}>
+                    {esg.socialScore}
+                  </span>
+                  <span className="score-label" style={{ color: getIndividualScoreData(esg.socialScore, 'social').color }}>
+                    {getIndividualScoreData(esg.socialScore, 'social').label}
+                  </span>
+                </div>
                 <div className="score-bar">
                   <div 
-                    className="score-fill" 
-                    style={{ width: `${esg.socialScore}%` }}
+                    className="score-fill social" 
+                    style={{ 
+                      width: `${esg.socialScore}%`,
+                      background: `linear-gradient(90deg, ${getIndividualScoreData(esg.socialScore, 'social').color}, ${getIndividualScoreData(esg.socialScore, 'social').color}dd)`
+                    }}
                   ></div>
                 </div>
               </div>
             </div>
             
             <div className="score-card governance">
-              <div className="card-icon">⚖️</div>
+              <div className="card-header">
+                <div className="card-icon">⚖️</div>
+                <div className="card-trend">
+                  <span className="trend-indicator">{getIndividualScoreData(esg.governanceScore, 'governance').trend}</span>
+                </div>
+              </div>
               <div className="card-content">
                 <h4>Governance</h4>
-                <span className="score">{esg.governanceScore}</span>
+                <div className="score-section">
+                  <span className="score" style={{ color: getIndividualScoreData(esg.governanceScore, 'governance').color }}>
+                    {esg.governanceScore}
+                  </span>
+                  <span className="score-label" style={{ color: getIndividualScoreData(esg.governanceScore, 'governance').color }}>
+                    {getIndividualScoreData(esg.governanceScore, 'governance').label}
+                  </span>
+                </div>
                 <div className="score-bar">
                   <div 
-                    className="score-fill" 
-                    style={{ width: `${esg.governanceScore}%` }}
+                    className="score-fill governance" 
+                    style={{ 
+                      width: `${esg.governanceScore}%`,
+                      background: `linear-gradient(90deg, ${getIndividualScoreData(esg.governanceScore, 'governance').color}, ${getIndividualScoreData(esg.governanceScore, 'governance').color}dd)`
+                    }}
                   ></div>
                 </div>
               </div>
@@ -334,6 +432,8 @@ function Dashboard() {
           )}
         </div>
       </div>
+      
+      <Footer />
     </>
   );
 }

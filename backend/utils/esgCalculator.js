@@ -19,35 +19,35 @@ const EMISSION_FACTORS = {
 // ===== NORMALIZATION BENCHMARKS =====
 
 const BENCHMARKS = {
-  // Environmental benchmarks for normalization
+  // Environmental benchmarks for normalization (updated for better scaling)
   emissions: {
-    fossilFuel: { min: 0, max: 50000 },      // kg CO2e
-    electricity: { min: 0, max: 100000 },    // kg CO2e
-    travel: { min: 0, max: 25000 },          // kg CO2e
-    fugitive: { min: 0, max: 10000 },        // kg CO2e
+    fossilFuel: { min: 0, max: 25000 },       // kg CO2e (reduced from 50000)
+    electricity: { min: 0, max: 50000 },      // kg CO2e (reduced from 100000)
+    travel: { min: 0, max: 15000 },           // kg CO2e (reduced from 25000)
+    fugitive: { min: 0, max: 5000 },          // kg CO2e (reduced from 10000)
   },
   water: {
-    usage: { min: 0, max: 10000 },           // m³
-    intensity: { min: 0, max: 500 },         // m³/unit
+    usage: { min: 0, max: 5000 },             // m³ (reduced from 10000)
+    intensity: { min: 0, max: 100 },          // m³/unit (reduced from 500)
   },
   waste: {
-    generated: { min: 0, max: 100000 },      // kg
+    generated: { min: 0, max: 50000 },        // kg (reduced from 100000)
   },
   
-  // Social benchmarks
+  // Social benchmarks (adjusted for better distribution)
   social: {
-    employeeTurnover: { min: 0, max: 50 },   // %
-    injuryRate: { min: 0, max: 20 },         // per 100 employees
-    genderDiversity: { min: 0, max: 100 },   // %
-    trainingHours: { min: 0, max: 80 },      // hours/employee
-    communityInvestment: { min: 0, max: 5 }  // % of revenue
+    employeeTurnover: { min: 0, max: 30 },    // % (reduced from 50)
+    injuryRate: { min: 0, max: 10 },          // per 100 employees (reduced from 20)
+    genderDiversity: { min: 20, max: 100 },   // % (increased min from 0)
+    trainingHours: { min: 0, max: 60 },       // hours/employee (reduced from 80)
+    communityInvestment: { min: 0, max: 3 }   // % of revenue (reduced from 5)
   },
   
-  // Governance benchmarks
+  // Governance benchmarks (adjusted for realistic ranges)
   governance: {
-    boardIndependence: { min: 0, max: 100 }, // %
-    executivePayRatio: { min: 1, max: 500 }, // ratio
-    shareholderRights: { min: 0, max: 10 }   // score
+    boardIndependence: { min: 30, max: 100 }, // % (increased min from 0)
+    executivePayRatio: { min: 1, max: 200 },  // ratio (reduced from 500)
+    shareholderRights: { min: 0, max: 10 }    // score (unchanged)
   }
 };
 
@@ -96,24 +96,34 @@ const WEIGHTS = {
  * Normalize positive metrics (higher = better) to 0-100 scale
  */
 function normalizePositive(value, min, max) {
+  // Handle edge cases
   if (value <= min) return 0;
   if (value >= max) return 100;
-  return ((value - min) / (max - min)) * 100;
+  if (max <= min) return 50; // Default to middle if invalid range
+  
+  const normalized = ((value - min) / (max - min)) * 100;
+  return Math.max(0, Math.min(100, normalized)); // Ensure 0-100 range
 }
 
 /**
  * Normalize negative metrics (lower = better) to 0-100 scale
  */
 function normalizeNegative(value, min, max) {
+  // Handle edge cases
   if (value <= min) return 100;
   if (value >= max) return 0;
-  return ((max - value) / (max - min)) * 100;
+  if (max <= min) return 50; // Default to middle if invalid range
+  
+  const normalized = ((max - value) / (max - min)) * 100;
+  return Math.max(0, Math.min(100, normalized)); // Ensure 0-100 range
 }
 
 /**
  * Clamp value between 0 and 100
  */
 function clamp(value) {
+  // Handle NaN and invalid values
+  if (isNaN(value) || !isFinite(value)) return 0;
   return Math.max(0, Math.min(100, value));
 }
 
@@ -234,11 +244,17 @@ function calculateEnvironmentalScore(data) {
     wasteScore * WEIGHTS.environmental.waste +
     fugitiveScore * WEIGHTS.environmental.fugitive;
   
-  // Apply offset mitigation factor (up to 10% bonus for significant offsets)
-  const offsetFactor = Math.min(effectiveOffsets / totalEmissions, 0.5); // Max 50% offset
-  const offsetBonus = offsetFactor * 10; // Up to 10 point bonus
+  // Apply offset mitigation factor (improve score proportionally, not additively)
+  let finalScore = baseScore;
+  if (totalEmissions > 0 && effectiveOffsets > 0) {
+    const offsetRatio = effectiveOffsets / totalEmissions;
+    // Improve score by up to 15% based on offset ratio, but don't exceed 100
+    const offsetImprovement = offsetRatio * 15;
+    finalScore = Math.min(100, baseScore + (baseScore * offsetImprovement / 100));
+  }
   
-  const finalScore = clamp(baseScore + offsetBonus);
+  // Ensure score is properly clamped between 0 and 100
+  finalScore = clamp(finalScore);
   
   return {
     score: finalScore,
@@ -359,11 +375,12 @@ function calculateESGScores(data) {
     socialScore * WEIGHTS.overall.social +
     governanceScore * WEIGHTS.overall.governance;
   
+  // Ensure all scores are properly clamped and rounded
   return {
-    environmentalScore: Math.round(environmentalScore * 100) / 100,
-    socialScore: Math.round(socialScore * 100) / 100,
-    governanceScore: Math.round(governanceScore * 100) / 100,
-    overallESGScore: Math.round(overallESGScore * 100) / 100,
+    environmentalScore: clamp(Math.round(environmentalScore * 100) / 100),
+    socialScore: clamp(Math.round(socialScore * 100) / 100),
+    governanceScore: clamp(Math.round(governanceScore * 100) / 100),
+    overallESGScore: clamp(Math.round(overallESGScore * 100) / 100),
     environmentalCalculations
   };
 }

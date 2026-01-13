@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/api";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./Register.css";
 
 function Register() {
@@ -109,6 +110,8 @@ function Register() {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </>
   );
 }
