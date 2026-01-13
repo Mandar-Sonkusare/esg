@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api/api";
-import Navbar from "../components/Navbar";
+import AuthNavbar from "../components/AuthNavbar";
 import "./Dashboard.css";
 
 import {
@@ -156,7 +156,7 @@ function Dashboard() {
   if (error) {
     return (
       <>
-        <Navbar />
+        <AuthNavbar />
         <ErrorState 
           message={error} 
           onRetry={() => window.location.reload()} 
@@ -168,7 +168,7 @@ function Dashboard() {
   if (!esg) {
     return (
       <>
-        <Navbar />
+        <AuthNavbar />
         <ErrorState 
           message="No ESG data available. Please submit your ESG data first." 
           onRetry={() => window.location.href = '/esg'} 
@@ -229,7 +229,7 @@ function Dashboard() {
   /* ================= JSX ================= */
   return (
     <>
-      <Navbar />
+      <AuthNavbar />
 
       <div className="dashboard-page">
         <div className="dashboard-container">

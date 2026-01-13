@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../api/api";
-import Navbar from "../components/Navbar";
+import AuthNavbar from "../components/AuthNavbar";
 import "./ESGForm.css";
 
 function ESGForm() {
@@ -99,7 +99,7 @@ function ESGForm() {
 
   return (
     <>
-      <Navbar />
+      <AuthNavbar />
 
       <div className="esg-page">
         <div className="esg-container">

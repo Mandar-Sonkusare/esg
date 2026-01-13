@@ -21,6 +21,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 /* 🔹 Title */
@@ -38,10 +39,62 @@
   font-weight: 600;
 }
 
+/* 🔹 Navigation links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.logout-button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #ef4444;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
 /* 🔹 Mobile safety */
 @media (max-width: 480px) {
   .navbar-inner {
     padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .nav-links {
+    gap: 8px;
+  }
+  
+  .nav-button, .logout-button {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }
 <button
