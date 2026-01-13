@@ -11,6 +11,8 @@ function ESGForm() {
   const [progress, setProgress] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [submissionResult, setSubmissionResult] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   const { toasts, showError, removeToast } = useToast();
 
   const [form, setForm] = useState({
@@ -31,15 +33,158 @@ function ESGForm() {
     antiCorruption: false,
   });
 
+  // Validation rules
+  const validationRules = {
+    carbonEmissions: { min: 0, max: 100000, required: false, label: "Carbon Emissions" },
+    renewableEnergy: { min: 0, max: 100, required: false, label: "Renewable Energy %" },
+    waterUsage: { min: 0, max: 50000, required: false, label: "Water Usage" },
+    wasteRecycled: { min: 0, max: 100, required: false, label: "Waste Recycled %" },
+    environmentalFines: { min: 0, max: 10000000, required: false, label: "Environmental Fines" },
+    employeeTurnover: { min: 0, max: 100, required: true, label: "Employee Turnover %" },
+    injuryRate: { min: 0, max: 50, required: true, label: "Injury Rate" },
+    genderDiversity: { min: 0, max: 100, required: true, label: "Gender Diversity %" },
+    trainingHours: { min: 0, max: 200, required: true, label: "Training Hours" },
+    communityInvestment: { min: 0, max: 20, required: true, label: "Community Investment %" },
+    boardIndependence: { min: 0, max: 100, required: true, label: "Board Independence %" },
+    executivePayRatio: { min: 1, max: 1000, required: true, label: "Executive Pay Ratio" },
+    shareholderRights: { min: 0, max: 10, required: true, label: "Shareholder Rights Score" },
+  };
+
+  // Validate individual field
+  const validateField = (name, value) => {
+    const rules = validationRules[name];
+    if (!rules) return null;
+
+    // Check if required field is empty
+    if (rules.required && (!value || value.toString().trim() === "")) {
+      return `${rules.label} is required`;
+    }
+
+    // Skip validation for empty optional fields
+    if (!rules.required && (!value || value.toString().trim() === "")) {
+      return null;
+    }
+
+    const numValue = parseFloat(value);
+
+    // Check if it's a valid number
+    if (isNaN(numValue)) {
+      return `${rules.label} must be a valid number`;
+    }
+
+    // Check min/max bounds
+    if (numValue < rules.min) {
+      return `${rules.label} must be at least ${rules.min}`;
+    }
+
+    if (numValue > rules.max) {
+      return `${rules.label} must not exceed ${rules.max}`;
+    }
+
+    return null;
+  };
+
+  // Validate all fields
+  const validateForm = () => {
+    const newErrors = {};
+    let hasErrors = false;
+
+    Object.keys(validationRules).forEach(field => {
+      const error = validateField(field, form[field]);
+      if (error) {
+        newErrors[field] = error;
+        hasErrors = true;
+      }
+    });
+
+    setErrors(newErrors);
+    return !hasErrors;
+  };
+
+  // Check if form is valid for submit button
+  const isFormValid = () => {
+    // Check required fields
+    const requiredFields = Object.keys(validationRules).filter(
+      field => validationRules[field].required
+    );
+
+    const hasRequiredFields = requiredFields.every(field => {
+      const value = form[field];
+      return value && value.toString().trim() !== "";
+    });
+
+    // Check if there are any errors
+    const hasNoErrors = Object.keys(errors).length === 0;
+
+    return hasRequiredFields && hasNoErrors;
+  };
+
+  // Input component with validation
+  const ValidatedInput = ({ name, placeholder, type = "number", required = false }) => {
+    const hasError = errors[name] && touched[name];
+    const isRequired = validationRules[name]?.required;
+    
+    return (
+      <div className="input-wrapper">
+        <input
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          value={form[name]}
+          onChange={handleChange}
+          onBlur={() => setTouched({ ...touched, [name]: true })}
+          className={`input ${hasError ? 'input-error' : ''} ${isRequired ? 'input-required' : ''}`}
+          min={validationRules[name]?.min}
+          max={validationRules[name]?.max}
+        />
+        {hasError && (
+          <span className="error-message">
+            <span className="error-icon">⚠️</span>
+            {errors[name]}
+          </span>
+        )}
+        {isRequired && !hasError && (
+          <span className="required-indicator">* Required</span>
+        )}
+      </div>
+    );
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const newValue = type === "checkbox" ? checked : value;
+    
     setForm({
       ...form,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: newValue,
     });
+
+    // Mark field as touched
+    setTouched({
+      ...touched,
+      [name]: true,
+    });
+
+    // Validate field in real-time
+    if (type !== "checkbox") {
+      const error = validateField(name, newValue);
+      setErrors(prev => ({
+        ...prev,
+        [name]: error
+      }));
+    }
   };
 
   const handleSubmit = async () => {
+    // Validate form before submission
+    if (!validateForm()) {
+      showError(
+        "Validation Error",
+        "Please fix the errors in the form before submitting."
+      );
+      return;
+    }
+
     try {
       setLoading(true);
       setProgress(0);
@@ -186,6 +331,39 @@ function ESGForm() {
             metrics for professional ESG scoring
           </p>
 
+          {/* Form Progress Indicator */}
+          <div className="form-progress">
+            <div className="progress-info">
+              <span className="progress-label">Form Completion</span>
+              <span className="progress-percentage">
+                {Math.round((Object.keys(validationRules).filter(field => 
+                  form[field] && form[field].toString().trim() !== ""
+                ).length / Object.keys(validationRules).length) * 100)}%
+              </span>
+            </div>
+            <div className="progress-bar-container">
+              <div 
+                className="progress-bar-fill"
+                style={{
+                  width: `${(Object.keys(validationRules).filter(field => 
+                    form[field] && form[field].toString().trim() !== ""
+                  ).length / Object.keys(validationRules).length) * 100}%`
+                }}
+              ></div>
+            </div>
+            <div className="progress-status">
+              {isFormValid() ? (
+                <span className="status-ready">✅ Ready to submit</span>
+              ) : (
+                <span className="status-incomplete">
+                  📝 {Object.keys(validationRules).filter(field => 
+                    validationRules[field].required && (!form[field] || form[field].toString().trim() === "")
+                  ).length} required fields remaining
+                </span>
+              )}
+            </div>
+          </div>
+
           {/* Environmental Section */}
           <div className="section environmental-section">
             <h3 className="section-title">
@@ -193,40 +371,25 @@ function ESGForm() {
               Environmental Metrics
             </h3>
             <div className="inputs-grid">
-              <input
+              <ValidatedInput
                 name="carbonEmissions"
                 placeholder="Carbon Emissions (tons)"
-                value={form.carbonEmissions}
-                onChange={handleChange}
-                className="input"
               />
-              <input
+              <ValidatedInput
                 name="renewableEnergy"
                 placeholder="Renewable Energy %"
-                value={form.renewableEnergy}
-                onChange={handleChange}
-                className="input"
               />
-              <input
+              <ValidatedInput
                 name="waterUsage"
                 placeholder="Water Usage (m³)"
-                value={form.waterUsage}
-                onChange={handleChange}
-                className="input"
               />
-              <input
+              <ValidatedInput
                 name="wasteRecycled"
                 placeholder="Waste Recycled %"
-                value={form.wasteRecycled}
-                onChange={handleChange}
-                className="input"
               />
-              <input
+              <ValidatedInput
                 name="environmentalFines"
                 placeholder="Environmental Fines $"
-                value={form.environmentalFines}
-                onChange={handleChange}
-                className="input"
               />
             </div>
           </div>
@@ -238,40 +401,30 @@ function ESGForm() {
               Social Metrics
             </h3>
             <div className="inputs-grid">
-              <input
+              <ValidatedInput
                 name="employeeTurnover"
                 placeholder="Employee Turnover %"
-                value={form.employeeTurnover}
-                onChange={handleChange}
-                className="input"
+                required
               />
-              <input
+              <ValidatedInput
                 name="injuryRate"
                 placeholder="Injury Rate (per 100)"
-                value={form.injuryRate}
-                onChange={handleChange}
-                className="input"
+                required
               />
-              <input
+              <ValidatedInput
                 name="genderDiversity"
                 placeholder="Gender Diversity %"
-                value={form.genderDiversity}
-                onChange={handleChange}
-                className="input"
+                required
               />
-              <input
+              <ValidatedInput
                 name="trainingHours"
                 placeholder="Training Hours per Employee"
-                value={form.trainingHours}
-                onChange={handleChange}
-                className="input"
+                required
               />
-              <input
+              <ValidatedInput
                 name="communityInvestment"
                 placeholder="Community Investment %"
-                value={form.communityInvestment}
-                onChange={handleChange}
-                className="input"
+                required
               />
             </div>
           </div>
@@ -283,26 +436,20 @@ function ESGForm() {
               Governance Metrics
             </h3>
             <div className="inputs-grid">
-              <input
+              <ValidatedInput
                 name="boardIndependence"
                 placeholder="Board Independence %"
-                value={form.boardIndependence}
-                onChange={handleChange}
-                className="input"
+                required
               />
-              <input
+              <ValidatedInput
                 name="executivePayRatio"
                 placeholder="Executive Pay Ratio"
-                value={form.executivePayRatio}
-                onChange={handleChange}
-                className="input"
+                required
               />
-              <input
+              <ValidatedInput
                 name="shareholderRights"
                 placeholder="Shareholder Rights (0-10)"
-                value={form.shareholderRights}
-                onChange={handleChange}
-                className="input"
+                required
               />
             </div>
 
@@ -332,8 +479,8 @@ function ESGForm() {
 
           <button
             onClick={handleSubmit}
-            disabled={loading}
-            className="submit-btn"
+            disabled={loading || !isFormValid()}
+            className={`submit-btn ${!isFormValid() ? 'submit-btn-disabled' : ''}`}
           >
             <span className="submit-icon">📊</span>
             {loading ? "Calculating ESG Scores..." : "Submit ESG Data"}

@@ -92,6 +92,20 @@ function AuthNavbar() {
               <span className="nav-icon">📝</span>
               Fill a form
             </button>
+            <button 
+              className="nav-button"
+              onClick={() => navigateTo("/resources")}
+            >
+              <span className="nav-icon">📚</span>
+              Resources
+            </button>
+            <button 
+              className="nav-button"
+              onClick={() => navigateTo("/analytics")}
+            >
+              <span className="nav-icon">📈</span>
+              Analytics
+            </button>
           </nav>
 
           <div className="navbar-actions">
@@ -147,6 +161,14 @@ function AuthNavbar() {
                     <button className="dropdown-item" onClick={() => navigateTo("/esg")}>
                       <span className="dropdown-icon">📝</span>
                       Submit Data
+                    </button>
+                    <button className="dropdown-item" onClick={() => navigateTo("/analytics")}>
+                      <span className="dropdown-icon">📈</span>
+                      Analytics
+                    </button>
+                    <button className="dropdown-item" onClick={() => navigateTo("/resources")}>
+                      <span className="dropdown-icon">📚</span>
+                      Learning Center
                     </button>
                     <button className="dropdown-item" disabled>
                       <span className="dropdown-icon">📄</span>

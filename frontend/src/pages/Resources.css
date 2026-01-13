@@ -1,0 +1,570 @@
+/* Import theme variables */
+@import '../styles/theme.css';
+
+.resources-page {
+  background: var(--bg-main);
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: var(--text-main);
+}
+
+.resources-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.resources-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.resources-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--title-text);
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.resources-subtitle {
+  font-size: 1.125rem;
+  color: var(--muted-text);
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Navigation Tabs */
+.resources-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.nav-tab {
+  padding: 12px 24px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: var(--card-bg);
+  color: var(--muted-text);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.nav-tab:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--card-text);
+  transform: translateY(-2px);
+}
+
+.nav-tab.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-color: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* Content Sections */
+.resources-content {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-section {
+  max-width: 100%;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--title-text);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.section-description {
+  font-size: 1.125rem;
+  color: var(--muted-text);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 48px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ESG Fundamentals */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.pillar-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.pillar-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pillar-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.pillar-icon {
+  font-size: 48px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.pillar-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.pillar-description {
+  color: var(--muted-text);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.pillar-section {
+  margin-bottom: 20px;
+}
+
+.pillar-section h4 {
+  color: var(--card-text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.pillar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pillar-list li {
+  color: var(--muted-text);
+  padding: 6px 0;
+  position: relative;
+  padding-left: 20px;
+  line-height: 1.4;
+}
+
+.pillar-list li::before {
+  content: '•';
+  color: #3b82f6;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+/* Industry Benchmarks */
+.benchmarks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.benchmark-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.benchmark-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.benchmark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.benchmark-sector {
+  color: var(--card-text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.benchmark-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.score-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #3b82f6;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.75rem;
+  color: var(--muted-text);
+  font-weight: 500;
+}
+
+.benchmark-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.benchmark-section h4 {
+  color: var(--card-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.performer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.performer-list li {
+  color: var(--muted-text);
+  font-size: 0.875rem;
+  padding: 2px 0;
+}
+
+.focus-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.focus-tag {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Best Practices */
+.practices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.practice-category {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.category-icon {
+  font-size: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.category-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--card-text);
+  margin: 0;
+}
+
+.practices-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.practice-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.practice-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.practice-title {
+  color: var(--card-text);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.practice-badges {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.impact-badge, .difficulty-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.impact-high { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.impact-medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.impact-low { background: rgba(156, 163, 175, 0.2); color: #9ca3af; }
+
+.difficulty-high { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+.difficulty-medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.difficulty-low { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+
+.practice-description {
+  color: var(--muted-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Regulatory Updates */
+.regulatory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.regulatory-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.regulatory-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.regulatory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.regulatory-info {
+  flex: 1;
+}
+
+.regulatory-title {
+  color: var(--card-text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.regulatory-region {
+  color: var(--muted-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.regulatory-badges {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-active { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.status-proposed { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+
+.regulatory-description {
+  color: var(--muted-text);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.regulatory-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.regulatory-deadline {
+  color: var(--muted-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Glossary */
+.glossary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.glossary-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.glossary-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.glossary-term {
+  color: var(--card-text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glossary-definition {
+  color: var(--muted-text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .resources-page {
+    padding: 24px 16px;
+  }
+  
+  .resources-title {
+    font-size: 2rem;
+  }
+  
+  .resources-nav {
+    gap: 4px;
+  }
+  
+  .nav-tab {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .benchmarks-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .practice-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .practice-badges {
+    align-self: flex-start;
+  }
+  
+  .regulatory-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .regulatory-badges {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .pillar-card,
+  .benchmark-card,
+  .practice-category,
+  .regulatory-item,
+  .glossary-item {
+    padding: 20px;
+  }
+  
+  .pillar-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .benchmark-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+}
