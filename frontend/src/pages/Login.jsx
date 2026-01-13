@@ -22,7 +22,6 @@ function Login() {
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
       localStorage.setItem("userEmail", email);
-      alert("Login successful");
 
       // redirect to dashboard
       window.location.href = "/dashboard";
